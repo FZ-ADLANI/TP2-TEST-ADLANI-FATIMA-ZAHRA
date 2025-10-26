@@ -13,15 +13,13 @@ import dev.langchain4j.service.AiServices;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
+import java.util.Scanner;
 import java.time.Duration;
 
-/**
- * Le RAG facile !
- */
-public class Test4 {
-
+public class Test5 {
+    // Interface pour l'assistant IA
     interface Assistant {
-        String chat(String userMessage);
+        String chat(String message);
     }
 
     public static void main(String[] args) {
@@ -30,23 +28,23 @@ public class Test4 {
         // Création du modèle de chat
         ChatModel modele = GoogleAiGeminiChatModel.builder()
                 .apiKey(apiKey)
-                .modelName("gemini-2.5-flash")
-                .temperature(0.3)
+                .temperature(0.2)
+                .modelName("gemini-2.0-flash-lite")
                 .build();
 
-        // Création du modèle d'embeddings
+        // Création du modèle d'embedding
         EmbeddingModel embeddingModel = GoogleAiEmbeddingModel.builder()
                 .apiKey(apiKey)
-                .modelName("gemini-embedding-001")
+                .modelName("text-embedding-004")
                 .timeout(Duration.ofSeconds(30))
                 .build();
 
-        // Chargement du document
-        String nomDocument = "infos.txt";
+        // Chargement du document PDF
+        String nomDocument = "agentsmcp.pdf";
         Document document = FileSystemDocumentLoader.loadDocument(nomDocument);
         EmbeddingStore<TextSegment> embeddingStore = new InMemoryEmbeddingStore<>();
 
-        // Ingestion avec le builder
+        // Ingestion du document avec le modèle d'embedding
         EmbeddingStoreIngestor.builder()
                 .embeddingModel(embeddingModel)
                 .embeddingStore(embeddingStore)
@@ -56,23 +54,35 @@ public class Test4 {
         // Création du retriever avec le modèle d'embedding
         EmbeddingStoreContentRetriever retriever = EmbeddingStoreContentRetriever.builder()
                 .embeddingStore(embeddingStore)
-                .embeddingModel(embeddingModel) // Ajout du modèle d'embedding ici
-                .maxResults(2) // Optionnel : nombre maximum de résultats
+                .embeddingModel(embeddingModel)
+                .maxResults(2)
                 .build();
 
-        // Création de l'assistant
+        // Création de l'assistant avec RAG
         Assistant assistant =
                 AiServices.builder(Assistant.class)
                         .chatModel(modele)
                         .chatMemory(MessageWindowChatMemory.withMaxMessages(10))
-                        .contentRetriever(retriever) // Utilisation du retriever configuré
+                        .contentRetriever(retriever)
                         .build();
 
-
-        // Test 2
-        String question2 = "Quelle est la capitale de la France ?";
-        String reponse2 = assistant.chat(question2);
-        System.out.println("Question 2: " + question2);
-        System.out.println("Réponse 2: " + reponse2);
+        // Conversation interactive avec l'utilisateur
+        try (Scanner scanner = new Scanner(System.in)) {
+            while (true) {
+                System.out.println("==================================================");
+                System.out.println("Posez votre question : ");
+                String question = scanner.nextLine();
+                if (question.isBlank()) {
+                    continue;
+                }
+                System.out.println("==================================================");
+                if ("fin".equalsIgnoreCase(question)) {
+                    break;
+                }
+                String reponse = assistant.chat(question);
+                System.out.println("Assistant : " + reponse);
+                System.out.println("==================================================");
+            }
+        }
     }
 }
