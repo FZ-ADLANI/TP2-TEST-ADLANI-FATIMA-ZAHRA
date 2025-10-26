@@ -69,13 +69,10 @@ public class Test4 {
                         .build();
 
 
-        // Test 1
-        String question1 = "Pierre appelle son chat. Qu'est-ce qu'il pourrait dire ?";
-        String reponse1 = assistant.chat(question1);
-        System.out.println("Question 1: " + question1);
-        System.out.println("Réponse 1: " + reponse1);
-        System.out.println();
-
-
+        // Test 2
+        String question2 = "Quelle est la capitale de la France ?";
+        String reponse2 = assistant.chat(question2);
+        System.out.println("Question 2: " + question2);
+        System.out.println("Réponse 2: " + reponse2);
     }
 }
