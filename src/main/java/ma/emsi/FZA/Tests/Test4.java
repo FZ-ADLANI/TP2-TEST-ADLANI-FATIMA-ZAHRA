@@ -68,10 +68,14 @@ public class Test4 {
                         .contentRetriever(retriever) // Utilisation du retriever configuré
                         .build();
 
-        String question ="Comment s'appelle le chat de Pierre ?";
-        String reponse = assistant.chat(question);
-        System.out.println("Question: " + question);
-        System.out.println("Réponse: " + reponse);
+
+        // Test 1
+        String question1 = "Pierre appelle son chat. Qu'est-ce qu'il pourrait dire ?";
+        String reponse1 = assistant.chat(question1);
+        System.out.println("Question 1: " + question1);
+        System.out.println("Réponse 1: " + reponse1);
+        System.out.println();
+
 
     }
 }
