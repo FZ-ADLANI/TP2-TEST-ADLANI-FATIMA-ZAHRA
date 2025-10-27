@@ -29,7 +29,7 @@ public class Test5 {
         ChatModel modele = GoogleAiGeminiChatModel.builder()
                 .apiKey(apiKey)
                 .temperature(0.2)
-                .modelName("gemini-2.0-flash-lite")
+                .modelName("gemini-2.5-flash")
                 .build();
 
         // Création du modèle d'embedding

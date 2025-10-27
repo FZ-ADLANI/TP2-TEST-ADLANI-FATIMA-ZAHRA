@@ -3,7 +3,6 @@ package ma.emsi.FZA.Tests;
 import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.googleai.GoogleAiGeminiChatModel;
 import dev.langchain4j.service.AiServices;
-import ma.emsi.FZA.Tests.MeteoTool;
 
 public class Test6 {
 
@@ -25,11 +24,12 @@ public class Test6 {
                         .tools(new MeteoTool())
                         .build();
 
-        // =========================================================================
-        // QUESTION 1 : Météo normale
-        // =========================================================================
 
-        String question1 = "quel temps fait-il à Rabat?";
+        // =========================================================================
+        // QUESTION 1 : Question valide
+        // =========================================================================
+        System.out.println("\n1. " + "=".repeat(50));
+        String question1 = "J'ai prévu d'aller aujourd'hui à TAZA. Est-ce que tu me conseilles de prendre un parapluie ?";
         System.out.println("Question : " + question1);
 
         try {
@@ -40,10 +40,10 @@ public class Test6 {
         }
 
         // =========================================================================
-        // QUESTION 2 : Conseil pratique avec parapluie
+        // QUESTION 2 : Ville qui n'existe pas
         // =========================================================================
         System.out.println("\n2. " + "=".repeat(50));
-        String question2 = "J'ai prévu d'aller aujourd'hui à TAZA. Est-ce que tu me conseilles de prendre un parapluie ?";
+        String question2 = "quel temps fait-il à fatimacity?";
         System.out.println("Question : " + question2);
 
         try {
@@ -54,29 +54,15 @@ public class Test6 {
         }
 
         // =========================================================================
-        // QUESTION 3 : Ville qui n'existe pas
+        // QUESTION 4 : Question hors météo
         // =========================================================================
         System.out.println("\n3. " + "=".repeat(50));
-        String question3 = "quel temps fait-il à fatimacity?";
+        String question3 = "quels sont les ingrédients d'un cake au chocolat ?";
         System.out.println("Question : " + question3);
 
         try {
             String reponse3 = assistant.chat(question3);
             System.out.println("Réponse : " + reponse3);
-        } catch (Exception e) {
-            System.out.println("Erreur : " + e.getMessage());
-        }
-
-        // =========================================================================
-        // QUESTION 4 : Question hors météo
-        // =========================================================================
-        System.out.println("\n4. " + "=".repeat(50));
-        String question4 = "quels sont les ingrédients d'un cake au chocolat ?";
-        System.out.println("Question : " + question4);
-
-        try {
-            String reponse4 = assistant.chat(question4);
-            System.out.println("Réponse : " + reponse4);
         } catch (Exception e) {
             System.out.println("Erreur : " + e.getMessage());
         }
